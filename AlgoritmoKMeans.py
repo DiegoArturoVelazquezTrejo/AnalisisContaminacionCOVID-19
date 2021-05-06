@@ -251,7 +251,7 @@ class AlgoritmoKMeans:
 
 
 
-
+'''
 # Prueba
 import random
 from matplotlib import pyplot as plt
@@ -262,9 +262,10 @@ fechas = [i for i in range(len(datosX))] # Funciona como un vil identificador pa
 
 datos = {"Fecha":fechas, "X":datosX, "Y":datosY}
 
-#df = pd.DataFrame(datos)
+df = pd.DataFrame(datos)
 
-#kmeans = AlgoritmoKMeans(6, df, ["X", "Y"], 30)
+kmeans = AlgoritmoKMeans(6, df, ["X", "Y"], 30)
 
-#kmeans.start()
-#kmeans.grafica()
+kmeans.start()
+kmeans.grafica()
+'''

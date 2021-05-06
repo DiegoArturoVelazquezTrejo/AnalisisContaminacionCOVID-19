@@ -1,11 +1,11 @@
 # Implementación de algoritmos para estudiar medidas estadísticas en datos.
+import math
 '''
 En esta clase vamos a implementar funciones de estadística básica, es decir:
 
     a) Promedio
     b) Moda
     c) Varianza
-    d) Algún coeficiente de correlación (Coeficiente de Pearson)
 
 
 La idea es que cuando tengamos ya los datos clasificados:
@@ -62,10 +62,10 @@ class Estadistica:
             valor = math.ceil(valor)
 
             if(valor in diccionario):
-                diccionario += 1
+                diccionario[valor] += 1
             else:
                 diccionario[valor] = 1
-        return max(diccionario, key=diccionario.get)
+        return max(diccionario, key=diccionario.get), max(diccionario.values())
     '''
     Método para implementar el cálculo de la varianza en un conjunto de datos
     @param conjunto de datos
@@ -97,13 +97,3 @@ class Estadistica:
         for i in range(len(valoresX)):
             suma += (valoresX[i] - promedioX)*(valoresY[i] - promedioY)
         return suma/len(valoresX)
-    '''
-    Método para implementar el coeficiente de Pearson
-    @param lista de datos X
-    @param lista de datos Y
-    @return coeficiente de Pearson entre datos X y datos Y
-    '''
-    def pearson(self, valoresX, valoresY):
-        if(len(valoresX) == 0 or len(valoresY) == 0):
-            return 0
-        return self.covarianza(valoresX, valoresY)/(math.sqrt(self.varianza(valoresX) * self.varianza(valoresY)))

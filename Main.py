@@ -8,20 +8,31 @@ from Estadistica import Estadistica
 data = pd.read_csv("CiudadMexicoDatosFinales.csv")
 
 # Definimos el número de clusters que utilizaremos
-clusters = 4
+clusters = 5
 
 # Definimos las variables de estudio
-variables_de_estudio = ["Infectados", "promedioO3Esc", "promedioSO2Esc", "promedioCOEsc"]
+variables_de_estudio = ["Infectados", "Defunciones", "Acumulado", "promedioO3Esc", "promedioSO2Esc", "promedioCOEsc"]
 
 # Definimos el número de iteraciones que queremos que realice el algoritmo
-iteraciones = 1000
+iteraciones = 100
 
 kmeans = AlgoritmoKMeans(clusters, data, variables_de_estudio, iteraciones)
 
-#kmeans.start()
+kmeans.start()
 
 # Aquí vamos a hacer un análisis estadístico de los grupos que nos generó el algoritmo
 centroides = ["centroide-"+str(i)+".csv" for i in range(1, clusters+1)]
 
-# Ahora vamos a realizar un estudio individual de las variables, definimos aquellas de las que queremos hacer estudio
-relacion_interes = [("Infectados", "promedioO3Esc"), ("Infectados", "promedioCOEsc"), ("Infectados", "promedioSO2Esc")]
+estadistica = Estadistica()
+
+# Vamos primero a imprimir los promedios para cada variable
+for centroide in centroides:
+    print(centroide)
+    data = pd.read_csv(centroide)
+    data.pop("Poblacion")
+    data.pop("Cluster")
+    print("\nDescripción del Cluster ")
+    print(data.describe())
+    print("\nCovarianzas entre variables del cluster (coeficiente de Pearson )\n")
+    print(data.corr(method ='pearson'))
+    print("\n=======================================================================================================================================\n\n")
