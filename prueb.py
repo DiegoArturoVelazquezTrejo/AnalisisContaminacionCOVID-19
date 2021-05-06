@@ -4,15 +4,18 @@ from sklearn import datasets, linear_model
 from sklearn.metrics import mean_squared_error, r2_score
 import pandas as pd
 
+# Load the diabetes dataset
+diabetes_X, diabetes_y = datasets.load_diabetes(return_X_y=True)
+
 data_sac = pd.read_csv("SACNOX.csv")
 x = data_sac["promedioGasNOX"].tolist()
 y = data_sac["Infectados"].tolist()
 
-#data_mer = pd.read_csv("MERNOX.csv")
-#x = data_mer["promedioGasNOX"].tolist()
-#y = data_mer["Infectados"].tolist()
+data_mer = pd.read_csv("MERNOX.csv")
+x = data_mer["promedioGasNOX"].tolist()
+y = data_mer["Infectados"].tolist()
 
-plt.scatter(x, y)
+plt.plot(x, y)
 plt.show()
 
 X = [[dato] for dato in x]
@@ -36,19 +39,19 @@ regr = linear_model.LinearRegression()
 
 regr.fit(datos_X_train, datos_y_train)
 
-# Vamos a hacer predicciones utilizando los datos de prueba
+# Make predictions using the testing set
 datos_y_pred = regr.predict(datos_X_test)
 
-# Coeficientes del modelo lineal
+# The coefficients
 print('Coefficients: \n', regr.coef_)
-# Error cuadrático medio
+# The mean squared error
 print('Mean squared error: %.2f'
       % mean_squared_error(datos_y_test, datos_y_pred))
-# Coeficiente de determinación
+# The coefficient of determination: 1 is perfect prediction
 print('Coefficient of determination: %.2f'
       % r2_score(datos_y_test, datos_y_pred))
 
-
+# Plot outputs
 plt.scatter(datos_X_test, datos_y_test,  color='black')
 plt.plot(datos_X_test, datos_y_pred, color='blue', linewidth=3)
 
