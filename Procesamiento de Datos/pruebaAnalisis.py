@@ -249,6 +249,9 @@ def subcadena_mayor(lista1, lista2):
 
 #print(subcadena_mayor(i_d_m_pm10, i_d_m_hospitalizados))
 '''
+
+# Algoritmo para obtener el índice de indice_equi_tendencia por caca posible combinación entre todas las estaciones que registran pm10
+
 for variable in var_epi:
     # Estructura de datos que contendrá el indice_equi_tendencia para cada combinación de estaciones junto con alguna variable epidemiológica
     diccionario_indices_equi_tendencias = {"clave":[], "indice_equi_tendencia":[], "indice_posicion":[]}

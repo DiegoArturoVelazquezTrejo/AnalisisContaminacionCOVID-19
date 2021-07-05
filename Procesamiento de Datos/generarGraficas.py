@@ -92,10 +92,9 @@ def multi_graficos(variable_epi, estaciones):
     fig = plt.figure(figsize=(15, 15))
 
     fig.tight_layout()
+    #fig.legend(labels = (variable_epi, 'Emisiones PM10'), loc='lower center')
 
     colores = ["yellow", "black", "green", "orange", "magenta", "blue", "black", "white"]
-
-
 
     x = [datetime(int(fecha.split("-")[0]), int(fecha.split("-")[1]), int(fecha.split("-")[2])) for fecha in data["Fecha"].tolist()]
     y = data[variable_epi].tolist()
@@ -159,6 +158,7 @@ multi_graficos(variable_epi, diecinueve)
 #   1. Generar un programa que abra todos los .csv del índice de equi tendencia
 #   y guarde únicamente aquellos con mayor índice
 #   2. Conectar el programa del punto 1 con este script para visualizar resultados
+#   3. Hallar coherencia entre las agrupaciones de estaciones para tener un plano segmentado
 
 
 '''
