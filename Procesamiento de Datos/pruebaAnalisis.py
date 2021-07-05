@@ -4,7 +4,7 @@ import numpy as np
 
 from matplotlib import pyplot as plt
 
-data = pd.read_csv("baseDatosFINAL(ANALISISCONTAMINACION)EST.csv")
+data = pd.read_csv("baseDatosFINAL(ANALISISCONTAMINACION)EST (ApartirFebrero).csv")
 
 estaciones_gases = data.keys()[39:].tolist()
 
@@ -34,6 +34,7 @@ for gas in gases:
 # Variables epidemiológicas
 var_epi = data.keys()[3:39].tolist()
 
+var_epi = ['Letalidad(123)', 'Letalidad(3)', 'Mortalidad(123)', 'Mortalidad(3)', 'P_Hospitalizados', 'Indice_positividad']
 
 '''
 Función para extraer únicamente las estaciones particulares deseadas
@@ -247,37 +248,34 @@ def subcadena_mayor(lista1, lista2):
     return mayor, indice - mayor
 
 #print(subcadena_mayor(i_d_m_pm10, i_d_m_hospitalizados))
-
-# Vamos a leer el archivo con el conjunto potencia
-conjunto_potencia_pm10 = open("pm10_potencia.txt")
-
-# Estructura de datos que contendrá el indice_equi_tendencia para cada combinación de estaciones junto con alguna variable epidemiológica
-diccionario_indices_equi_tendencias = {}
-
+'''
 for variable in var_epi:
+    # Estructura de datos que contendrá el indice_equi_tendencia para cada combinación de estaciones junto con alguna variable epidemiológica
+    diccionario_indices_equi_tendencias = {"clave":[], "indice_equi_tendencia":[], "indice_posicion":[]}
+
+    # Vamos a leer el archivo con el conjunto potencia
+    conjunto_potencia_pm10 = open("pm10_potencia.txt")
+
+    variable_epidemiologica = data[variable].tolist()
+    i_d_m_comorbilidad = moda_tres(tendencia_I_D_M(variable_epidemiologica))
+
     for conjunto in conjunto_potencia_pm10:
-        print("Procesando "+variable+" - "+conjunto, end="")
+        #print("Procesando "+variable+" - "+conjunto, end="")
         # Aquí es donde vamos a analizando cada promedio con cada variable epidemiológica
         # Tenemos que hallar una manera inteligente de quedarnos con aquellas que den buena significancia estadística
-        variable_epidemiologica = data[variable].tolist()
         combinacion_estaciones_gas = promedios(conjunto.split(",")[:-1])
         # Aquí es donde viene el análisis propuesto, ya sea geométrico o estadístico
         # También podemos realizar lo siguiente:
-        i_d_m_comorbilidad = moda_tres(tendencia_I_D_M(variable_epidemiologica))
         i_d_m_promedio_gas = moda_tres(tendencia_I_D_M(combinacion_estaciones_gas))
         indice_equi_tendencia, indice = subcadena_mayor(i_d_m_comorbilidad, i_d_m_promedio_gas)
-        print(" "+str(indice_equi_tendencia)+" - "+str(indice))
+        #print(" "+str(indice_equi_tendencia)+" - "+str(indice))
         # Registrar aquellos que tengan un mayor valor para elp  indice_equi_tendencia
-        identificador = conjunto+"-"+variable+"-"+str(indice)
+        diccionario_indices_equi_tendencias["clave"].append(str(conjunto)+"-"+variable)
+        diccionario_indices_equi_tendencias["indice_equi_tendencia"].append(indice_equi_tendencia)
+        diccionario_indices_equi_tendencias["indice_posicion"].append(indice)
 
+    print("Generando DataFrame para "+variable+" ... ")
+    df = pd.DataFrame(diccionario_indices_equi_tendencias)
+    df.to_csv("./PruebasCoeficienteTendencia/"+variable+".csv", header = True, index = False)
 
-arch = ""
-# Vamos a guardar el diccionario
-for key in diccionario_indices_equi_tendencias:
-    arch += key + "-" +diccionario_indices_equi_tendencias[key]+"\n"
-
-'''
-MAÑANA EN EL INSITUTO:
-
-3. REALIZAR EL MÉTODO PARA IR RGEISTRANDO AQUELLAS COMBINACIONES DE ESTACIONES Y VARIABLES EPIDEMIOLÓGICAS QUE TENGAN MAYOR INDICE_EQUI_TENDENCIA
 '''
